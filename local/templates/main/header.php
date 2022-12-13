@@ -1,50 +1,53 @@
-<?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-    die();
-}
-use Bitrix\Main\Page\Asset;
-
-//Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/main.css");
-//Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/mobile.css");
-Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery/jquery.min.js');
-Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/external.js');
-Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/internal.js');
-Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/filter.js');
-
-global $APPLICATION;
-?>
-
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui, user-scalable=no">
     <meta name="skype_toolbar" content="skype_toolbar_parser_compatible">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="google" value="notranslate">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="noindex">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/main.css" rel="stylesheet">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/mobile.css" rel="stylesheet">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/tablet.css" rel="stylesheet" media="(min-width: 768px)">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/desktop-min.css" rel="stylesheet" media="(min-width: 1024px)">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/desktop.css" rel="stylesheet" media="(min-width: 1366px)">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/desktop-big.css" rel="stylesheet" media="(min-width:1600px)">
-    <link href="<?=SITE_TEMPLATE_PATH?>/css/desktop-fullhd.css" rel="stylesheet" media="(min-width:1920px)">
+    <link href="/src/build/css/main.css" rel="stylesheet">
+    <link href="/src/build/css/mobile.css" rel="stylesheet">
+    <link href="/src/build/css/tablet.css" rel="stylesheet" media="(min-width: 768px)">
+    <link href="/src/build/css/desktop-min.css" rel="stylesheet" media="(min-width: 1024px)">
+    <link href="/src/build/css/desktop.css" rel="stylesheet" media="(min-width: 1366px)">
+    <link href="/src/build/css/desktop-big.css" rel="stylesheet" media="(min-width:1600px)">
+    <link href="/src/build/css/desktop-fullhd.css" rel="stylesheet" media="(min-width:1920px)">
+    <link href="/src/build/fonts/Inter-Regular.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Inter-Regular.woff2" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Inter-SemiBold.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Inter-SemiBoldItalic.woff2" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Bold.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Bold.woff2" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Light.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Light.woff2" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Medium.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Medium.woff2" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Regular.woff" rel="preload" as="font" crossorigin>
+    <link href="/src/build/fonts/Roboto-Regular.woff2" rel="preload" as="font" crossorigin>
+    <!--[if lte IE 9]>
+    <script src="/src/build/js/html5shiv/html5shiv.min.js"></script><![endif]-->
+
     <title><? $APPLICATION->ShowTitle(); ?></title>
-    <meta name="description" content="">
-    <meta name="keywords" content=""><!--[if lte IE 9]>
-    <script src="<?=SITE_TEMPLATE_PATH?>/js/html5shiv/html5shiv.min.js"></script><![endif]-->
+    <meta property="og:title" content="<?$APPLICATION->ShowTitle()?>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?=$APPLICATION->GetCurPage()?>">
+    <meta property="og:image" content="<?$APPLICATION->ShowViewContent('og_image')?>">
+    <meta property="og:description" content="<?$APPLICATION->ShowProperty('description')?>">
     <? $APPLICATION->ShowHead(); ?>
 </head>
 <body>
 <?$APPLICATION->ShowPanel();?>
+<? $curPage = $APPLICATION->GetCurPage(); ?>
 
-<div class="b-page-wrapper <?$APPLICATION->ShowProperty('catalog:sect');?> <?if($APPLICATION->GetCurPage() == '/') { ?> mainpage<? } ?> js-page-wrapper">
-    <header class="b-header js-header">
-        <?if($APPLICATION->GetCurPage() !== '/' && $APPLICATION->GetCurPage() !== '/cart/'):?>
-        <div class="b-header__top <?if($APPLICATION->ShowProperty('catalog:sect') == 'N'):?> <?else:?>b-header__top--fixed<?endif;?>">
-            <div class="b-container">
-                <div class="b-header__mobile-inner"><a class="b-logo b-logo--mobile" href="/">
+<div class="b-page-wrapper <?$APPLICATION->ShowProperty('catalog:sect');?><?$APPLICATION->ShowProperty('header_page_wrapper')?> js-page-wrapper">
+    <header class="b-header <?if($curPage == '/important/'){?>b-header--with-title b-header--with-tabs<?}else if($curPage == '/cooperation/' || $curPage == '/where-to-buy/' || $curPage == '/about/'){?>b-header--with-title<?}?> js-header">
+
+        <div class="b-header__top<?$APPLICATION->AddBufferContent("header_catalog_sect")?>">
+            <div class="b-container <?if($curPage == '/important/' || $curPage == '/cooperation/' || $curPage == '/where-to-buy/' || $curPage == '/about/'){?>b-container--new-header<?}?>">
+                <div class="b-header__mobile-inner">
+                    <a class="b-logo b-logo--mobile <?if($curPage == '/important/' || $curPage == '/cooperation/' || $curPage == '/where-to-buy/' || $curPage == '/about/'){?>b-logo--new-header<?}?>" href="/">
                         <svg width="85" height="40" viewBox="15 0 85 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M32.8947 40.2205H32.4369V4.33653L15.2398 0.620516V36.1872H14.7891V0L32.8947 3.91346V40.2205Z"
                                   fill="#ED1C24"/>
@@ -70,40 +73,152 @@ global $APPLICATION;
                             </defs>
                         </svg>
                     </a>
+
+
+
+
                     <ul class="b-header__buttons-panel">
-                        <li class="b-header__bp-item b-header__bp-item--cart"><a class="b-link-cart"
-                                                                                 href="/cart.html"><span
-                                        class="b-link-cart__icon"><i class="b-icon icon-basket"></i><span
-                                            class="b-link-cart__counter"><span>3</span></span></span><span
-                                        class="b-link-cart__text">Корзина</span></a>
-                        </li>
+                        <? if ($curPage !== '/catalog/'): ?>
+                            <li class="b-header__bp-item b-header__bp-item--cart">
+                                <?
+                                CModule::IncludeModule("sale");
+                                $cart = CSaleBasket::GetList(
+                                    false,
+                                    array(
+                                        "FUSER_ID" => CSaleBasket::GetBasketUserID(),
+                                        "LID" => SITE_ID,
+                                        "ORDER_ID" => "NULL"
+                                    ),
+                                    false,
+                                    false,
+                                    array(
+                                        'ID',
+                                        'PRODUCT_ID',
+                                        'QUANTITY',
+                                    )
+                                );
+                                $countItemsInCart = 0;
+                                while ($arItems = $cart->Fetch())
+                                {
+                                    $resElem = CIBlockElement::GetList(
+                                        [],
+                                        [ 'IBLOCK_ID' => 4, 'ID' => $arItems['PRODUCT_ID'] ],
+                                        false,
+                                        false,
+                                        [ 'ID', 'PROPERTY_KIT' ]
+                                    );
+
+                                    if ( $arElem = $resElem->Fetch() ){
+                                        $countItemsInCart += $arItems['QUANTITY'];
+                                    }
+                                }
+                                ?>
+                                <a class="b-link-cart" href="/cart/">
+                                    <span class="b-link-cart__icon">
+                                        <i class="b-icon icon-basket"></i>
+                                        <span class="b-link-cart__counter">
+                                            <span><?=$countItemsInCart?></span>
+                                        </span>
+                                    </span>
+                                    <span class="b-link-cart__text">Корзина</span>
+                                </a>
+                            </li>
+                        <? endif; ?>
                         <? if (!$USER->IsAuthorized()): ?>
-                        <li class="b-header__bp-item b-header__bp-item--login"><a
-                                    class="b-link b-link--block js-authorization-open" href="javascript:void(0);"
-                                    title="undefined"><i class="b-icon icon-log-in"></i>
-                                <div class="b-header__link-name">Войти</div>
-                            </a>
-                        </li>
+                            <li class="b-header__bp-item b-header__bp-item--login">
+                                <a class="b-link b-link--block js-authorization-open" href="javascript:void(0);" title="undefined">
+                                    <i class="b-icon icon-log-in"></i>
+                                    <div class="b-header__link-name">Войти</div>
+                                </a>
+                            </li>
                         <?else:?>
-                            <li class="b-header__bp-item b-header__bp-item--login"><a
-                                        class="b-link b-link--block" href="#"
-                                        title="undefined"><i class="b-icon icon-log-in"></i>
-                                    <div class="b-header__link-name"><?=$USER->GetLogin(); ?></div>
+                            <li class="b-header__bp-item b-header__bp-item--login">
+                                <a class="b-link b-link--block authorized js-open-popup" data-popup="logout" href="#" title="undefined">
+                                    <i class="b-icon authorized icon-log-in"></i>
+                                    <div class="b-header__link-name"><?=$USER->GetLogin();?></div>
                                 </a>
                             </li>
                         <?endif;?>
-                        <li class="b-header__bp-item b-header__bp-item--burger"><a class="b-burger js-burger"
-                                                                                   href="javascript:void(0);"><span
-                                        class="b-burger__link"><span class="b-burger__line"></span></span></a>
+                        <? if ($curPage === '/catalog/'): ?>
+                            <li class="b-header__bp-item b-header__bp-item--cart">
+                                <?
+                                CModule::IncludeModule("sale");
+                                $cart = CSaleBasket::GetList(
+                                    false,
+                                    array(
+                                        "FUSER_ID" => CSaleBasket::GetBasketUserID(),
+                                        "LID" => SITE_ID,
+                                        "ORDER_ID" => "NULL"
+                                    ),
+                                    false,
+                                    false,
+                                    array(
+                                        'ID',
+                                        'PRODUCT_ID',
+                                        'QUANTITY',
+                                    )
+                                );
+                                $countItemsInCart = 0;
+                                while ($arItems = $cart->Fetch())
+                                {
+                                    $resElem = CIBlockElement::GetList(
+                                        [],
+                                        [ 'IBLOCK_ID' => 4, 'ID' => $arItems['PRODUCT_ID'] ],
+                                        false,
+                                        false,
+                                        [ 'ID', 'PROPERTY_KIT' ]
+                                    );
+
+                                    if ( $arElem = $resElem->Fetch() ){
+                                        $countItemsInCart += $arItems['QUANTITY'];
+                                    }
+                                }
+                                ?>
+                                <a class="b-link b-link--block js-aside-open is-open" href="javascript:void(0);">
+                                    <i class="b-icon icon-filter"></i>
+                                    <div class="b-header__link-name">Фильтр</div>
+                                </a>
+                            </li>
+                        <? endif; ?>
+                        <li class="b-header__bp-item b-header__bp-item--burger">
+                            <a class="b-burger js-burger" href="javascript:void(0);">
+                                <span class="b-burger__link">
+                                    <span class="b-burger__line"></span>
+                                </span>
+                            </a>
                         </li>
                     </ul>
+
+
+
+
                 </div>
+
+                <?if($curPage == '/cooperation/'):?>
+                    <h1 class="b-header__page-title">Cотрудничество</h1>
+                <?elseif($curPage == '/about/'):?>
+                    <h1 class="b-header__page-title">О компании</h1>
+                <?elseif($curPage == '/where-to-buy/'):?>
+                    <h1 class="b-header__page-title">Где купить</h1>
+                <?elseif($curPage == '/important/'):?>
+                    <h1 class="b-header__page-title">Корпоративные требования <mark>к&nbsp;межкомнатным дверям</mark></h1>
+                    <?$APPLICATION->IncludeComponent("bitrix:catalog.section.list","important",
+                        Array(
+                            'IBLOCK_TYPE' => 'content',
+                            'IBLOCK_ID' => 12,
+                            'CUSTOM_SECTION_SORT' => array(
+                                    'SORT' => 'ASC'
+                            )
+                        )
+                    );?>
+                <?endif;?>
             </div>
         </div>
-        <?endif;?>
+
         <div class="b-header__left js-menu">
             <div class="b-header__inner">
-                <div class="b-header__logo"><a class="b-logo" href="/">
+                <div class="b-header__logo">
+                    <a class="b-logo" href="/">
                         <svg width="204" height="133" viewBox="0 0 204 133" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_464:5654)">
                                 <path d="M62.3951 105.433H61.541V37.7125L28.9495 30.7129V97.8342H28.082V29.5286L62.3951 36.914V105.433Z"
@@ -135,45 +250,41 @@ global $APPLICATION;
                         </svg>
                     </a>
                 </div>
-                <form class="b-header__search">
-                    <div class="b-input b-input--search js-search"><input class="b-input__input-field" id="search"
-                                                                          type="text" placeholder="Поиск"
-                                                                          name="search"/>
-                        <label class="b-input__label" for="search">
-                        </label>
+                <form class="b-header__search" style="display: none;">
+                    <div class="b-input b-input--search js-search">
+                        <input class="b-input__input-field" id="search" type="text" placeholder="Поиск" name="search"/>
+                        <label class="b-input__label" for="search"></label>
                     </div>
                 </form>
-                <?$APPLICATION->IncludeComponent("bitrix:menu","header",Array(
+                <? $APPLICATION->IncludeComponent(
+                    "bitrix:menu",
+                    "header",
+                    Array(
                         "ROOT_MENU_TYPE" => "left",
                         "MAX_LEVEL" => "1",
                         "CHILD_MENU_TYPE" => "top",
-                        "USE_EXT" => "Y",
+                        "USE_EXT" => "N",
                         "DELAY" => "N",
                         "ALLOW_MULTI_SELECT" => "N",
                         "MENU_CACHE_TYPE" => "N",
-                        "MENU_CACHE_TIME" => "3600",
-                        "MENU_CACHE_USE_GROUPS" => "Y",
+                        "MENU_CACHE_TIME" => "3600000",
+                        "MENU_CACHE_USE_GROUPS" => "N",
                         "MENU_CACHE_GET_VARS" => ""
-                    )
-                );?>
-                <div class="b-header__copyright"><span>&copy;&nbsp;Шейл Дорс.<?=date('Y')?>.</span>
-                </div>
-            </div>
-        </div>
-        <div class="b-authorization js-authorization">
-            <div class="b-authorization__wrap">
-                <button class="b-authorization__close js-close">Закрыть<i
-                            class="b-icon b-icon--authorization icon-arrow-right"></i>
+                    ), false, ['HIDE_ICONS' => 'Y']
+                ); ?>
+                <button class="b-button b-button--feedback js-open-popup js-open-feedback" data-popup="feedback">Обратная связь
                 </button>
-                <div class="b-authorization__title">Войти
+                <div class="b-header__copyright">
+                    <span>&copy;&nbsp;Шейл Дорс.<?=date('Y')?>.</span>
                 </div>
-                <?$APPLICATION->IncludeComponent("bitrix:system.auth.form","auth_form",Array(
-                        "REGISTER_URL" => "register.php",
-                        "FORGOT_PASSWORD_URL" => "",
-                        "PROFILE_URL" => "profile.php",
-                        "SHOW_ERRORS" => "Y"
-                    )
-                );?>
             </div>
         </div>
+        <? if (!$USER->IsAuthorized()) {
+            $APPLICATION->IncludeFile(
+                SITE_DIR."include/auth_popap.php",
+                array(),
+                array()
+            );
+        }
+        ?>
     </header>

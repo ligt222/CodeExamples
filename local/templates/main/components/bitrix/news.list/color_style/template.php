@@ -13,7 +13,7 @@
 $this->setFrameMode(true);
 ?>
 
-<div class="b-constructor-slider__gallery">
+
     <div class="b-constructor-slider__background-wrap">
         <? $i = 0;
         foreach ($arResult['ITEMS'] as $item): ?>
@@ -26,10 +26,5 @@ $this->setFrameMode(true);
         <? $i++;
         endforeach; ?>
     </div>
-    <div class="b-constructor-slider__doors-wrap">
-        <img class="b-constructor-slider__door js-door-target js-image-wrapper"
-             src="<?=SITE_TEMPLATE_PATH?>/images/content/doors/door_1.jpg"
-             alt="" loading="lazy" role="presentation"/>
-    </div>
-</div>
+
 

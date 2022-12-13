@@ -2,3 +2,6 @@
 
 $GLOBALS['RESULT'] = $arResult['RESULT'];
 
+if ($arResult['OG_IMAGE'])
+    $APPLICATION->AddViewContent('og_image', $arResult['OG_IMAGE']);
+

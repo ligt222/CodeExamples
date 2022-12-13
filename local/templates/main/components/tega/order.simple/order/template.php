@@ -1,16 +1,31 @@
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
+if (\Bitrix\Main\Loader::includeModule('iblock')) {
+    $idBlock = 14;
+    $idElement = 19158; //19047
+    $res = CIBlockElement::GetProperty($idBlock, $idElement, array("sort" => "asc"), array("CODE" => "POLITC_POLICY"));
+    $ob = $res->Fetch();
+    $rsFile = CFile::GetByID($ob['VALUE']);
+    $arFile = $rsFile->Fetch();
+    $fileMobile = '/upload/' . $arFile['SUBDIR'] . '/' . $arFile['FILE_NAME'];
+}
+
 if ($arResult["ORDER_SUCCESSFULLY_CREATED"] == "Y") {
     $APPLICATION->RestartBuffer();
     header('Content-Type: application/json');
-    echo json_encode(array("status" => "success"), JSON_UNESCAPED_SLASHES || JSON_NUMERIC_CHECK);
+    echo json_encode(
+            [
+                "status" => "success",
+                'link' => '/order/?ID=' . $arResult['ORDER_ID'],
+            ],
+            JSON_UNESCAPED_SLASHES || JSON_NUMERIC_CHECK);
     die;
     return;
 } else {
     ?>
     <script type="text/javascript">
-        function submitTest(val, formId, validationID){
+        /*function submit_order(val, formId, validationID){
             BX(validationID).value = (val !== 'Y') ? "N" : "Y";
             var orderForm = BX(formId);
             let data = new FormData(orderForm);
@@ -29,13 +44,7 @@ if ($arResult["ORDER_SUCCESSFULLY_CREATED"] == "Y") {
                     console.log('error');
                 }
             });
-        }
-        function submitForm(val) {
-            BX('<? echo $arParams["ENABLE_VALIDATION_INPUT_ID"]; ?>').value = (val !== 'Y') ? "N" : "Y";
-            var orderForm = BX('<? echo $arParams["FORM_ID"]; ?>');
-            BX.submit(orderForm);
-            return true;
-        }
+        }*/
     </script>
     <div class="b-order">
         <div class="b-order__wrapper">
@@ -108,15 +117,20 @@ if ($arResult["ORDER_SUCCESSFULLY_CREATED"] == "Y") {
                            title="Даю согласие на&amp;nbsp;обработку персональных данных"
                            checked="checked" required="required"/>
                     <label class="b-checkbox__name b-checkbox__name--order" for="order-check"><span
-                                class="b-checkbox__text">Даю согласие на&nbsp;обработку персональных данных</span>
+                                class="b-checkbox__text"><a href="<?=$fileMobile?>" target="_blank">Даю согласие на&nbsp;обработку персональных данных</a></span>
                     </label>
                 </div>
                 <!--<button class="b-button b-button--with-icon" onclick="submitForm('Y'); return false;"><span>Оформить заказ</span><i
                             class="b-icon icon-basket"></i>
                 </button>-->
-                <button class="b-button b-button--with-icon" onclick="submitTest('Y', <?=$arParams['FORM_ID']?>, <?=$arParams['ENABLE_VALIDATION_INPUT_ID']?>); return false;"><span>Оформить заказ</span><i
-                            class="b-icon icon-basket"></i>
-                </button>
+                <a
+                    class="b-button b-button--with-icon js-checkout"
+                >
+                    <span>Оформить заказ</span>
+                    <i
+                        class="b-icon icon-basket">
+                    </i>
+                </a>
             </form>
         </div>
     </div>

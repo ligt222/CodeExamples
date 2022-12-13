@@ -1,0 +1,53 @@
+<?require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
+$APPLICATION->IncludeComponent(
+    "tega:order.simple",
+    "",
+    array(
+        "AJAX_MODE" => "Y",
+        "AJAX_OPTION_ADDITIONAL" => "",
+        "AJAX_OPTION_HISTORY" => "N",
+        "AJAX_OPTION_JUMP" => "N",
+        "AJAX_OPTION_STYLE" => "Y",
+        "ANONYMOUS_USER_ID" => "",
+        "BASKET_PAGE" => "/cart/",
+        "EMAIL_PROPERTY" => "2",
+        "ENABLE_VALIDATION_INPUT_ID" => "simple_order_form_validation",
+        "ENABLE_VALIDATION_INPUT_NAME" => "validation",
+        "EVENT_TYPES" => "",
+        "FIO_PROPERTY" => "1",
+        "FORM_ID" => "simple_order_form",
+        "FORM_NAME" => "simple_order_form",
+        "PATH_TO_PAYMENT" => "/cart/payment/",
+        "ORDER_PROPS" => array(
+            0 => "1",
+            1 => "2",
+            2 => "3",
+            3 => "4",
+            4 => "5",
+            5 => "6",
+            6 => "7",
+            7 => "20",
+            8 => "21",
+            9 => "22",
+            10 => "24",
+            11 => "25",
+            12 => "26",
+            13 => "27",
+            14 => "28",
+            15 => "29"
+        ),
+        "ORDER_RESULT_PAGE" => "",
+        "PERSON_TYPE_ID" => "1",
+        "PHONE_PROPERTY" => "3",
+        "REQUIRED_ORDER_PROPS" => array(
+        ),
+        "SET_DEFAULT_PROPERTIES_VALUES" => "Y",
+        "SITE_ID" => "s1",
+        "USER_CONSENT" => "N",
+        "USER_CONSENT_ID" => "1",
+        "USER_CONSENT_IS_CHECKED" => "Y",
+        "USER_CONSENT_IS_LOADED" => "N",
+        "USE_DATE_CALCULATION" => "N"
+    ),
+    false
+);

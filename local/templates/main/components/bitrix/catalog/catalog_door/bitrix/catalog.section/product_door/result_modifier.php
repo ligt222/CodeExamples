@@ -1,17 +1,33 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-use \Bitrix\Main;
-use \Bitrix\Main\Loader;
+$box_price = 0;
 
-$res = CIBlockElement::GetList(array(), array('IBLOCK_ID' => $arParams['IBLOCK_ID'], 'SECTION_CODE' => $arParams['SECTION_CODE']), false, array(), array());
-while($ob = $res->GetNextElement())
-{
-    $arFields = $ob->GetFields();
-    $arFile = CFile::GetPath($arFields['PREVIEW_PICTURE']);
-    $arDetalFile = CFile::GetPath($arFields['DETAIL_PICTURE']);
-    $arResult['ITEMS'][$arFields['ID']] = $arFields;
-    $arResult['ITEMS'][$arFields['ID']]['PREV_PICTURE_URL'] = $arFile;
-    $arResult['ITEMS'][$arFields['ID']]['DETAIL_PICTURE_URL'] = $arDetalFile;
+if ( $arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_NOT_TRESHOLD'] ) {
 
+    if ($resPrice = CPrice::GetBasePrice($arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_NOT_TRESHOLD']['VALUE'])){
+        $box_price = (int)$resPrice['PRICE'];
+    }
+
+    $arResult['RESULT'][] = [
+        'ID' => $arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_NOT_TRESHOLD']['VALUE'],
+        'PRICE' => $box_price,
+    ];
+}
+if ( $arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_TRESHOLD'] ) {
+    if ($resPrice = CPrice::GetBasePrice($arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_TRESHOLD']['VALUE'])){
+        $box_price = (int)$resPrice['PRICE'];
+    }
+    $arResult['RESULT'][] = [
+        'ID' => $arResult['ITEMS'][0]['DISPLAY_PROPERTIES']['BOX_TRESHOLD']['VALUE'],
+        'PRICE' => $box_price,
+    ];
 }
 
+$arResult['OG_IMAGE'] = ($arResult['UF_OG_IMAGE'] ? CFile::GetPath($arResult['UF_OG_IMAGE']) : false);
+
+
+$this->__component->SetResultCacheKeys([
+    'RESULT',
+    'OG_IMAGE'
+]);
+?>

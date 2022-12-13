@@ -1,24 +1,50 @@
-<?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-    die();
-}
-
-?>
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 </div>
-<div class="b-popup" data-popup="cart">
-    <div class="b-popup__content">
-        <div class="b-popup-add-cart">
-            <div class="b-popup-add-cart__top-wrap"><a class="b-popup__close js-close-popup" href="javascript:void(0);"><i
-                            class="b-icon b-icon--close-popup icon-close"></i></a><span class="b-popup-add-cart__title">Товар SOFT PRAGUE успешно добавлен в&nbsp;корзину</span>
-            </div>
-            <div class="b-popup-add-cart__bottom-wrap"><a class="b-button b-button--save b-button--popup-cart"
-                                                          href="/cart.html" title="Перейти в корзину">Перейти в
-                    корзину</a><a class="b-button b-button--cancellation b-button--popup-edit" href="/cart.html"
-                                  title="Редактировать">Редактировать</a>
-            </div>
-        </div>
-    </div>
-</div>
+<? $APPLICATION->IncludeFile(
+    SITE_DIR."include/add_basket_popap.php",
+    array(),
+    array()
+);?>
+
+<? if ($USER->IsAuthorized()) {
+    $APPLICATION->IncludeFile(
+        SITE_DIR."include/log_out_popap.php",
+        array(),
+        array()
+    );
+}?>
+
+<? $APPLICATION->IncludeFile(
+    SITE_DIR."include/feedback_popap.php",
+    array(),
+    array()
+);?>
+
+<?
+if ($APPLICATION->GetCurPage() == '/about/')
+$APPLICATION->IncludeFile(
+    SITE_DIR."include/about_certificates_popap.php",
+    array(),
+    array()
+);?>
+
+
+<?
+if ($APPLICATION->GetProperty('showPopupConstructor') == 'Y')
+$APPLICATION->IncludeFile(
+    SITE_DIR."include/constructor_popap.php",
+   array(),
+    array()
+);?>
+
 </body>
 </html>
+
+<?
+use Bitrix\Main\Page\Asset;
+Asset::getInstance()->addJs(SITE_DIR . 'src/build/js/jquery/jquery.min.js');
+Asset::getInstance()->addJs(SITE_DIR . 'src/build/js/external.js');
+Asset::getInstance()->addJs(SITE_DIR . 'src/build/js/internal.js');
+Asset::getInstance()->addJs(SITE_DIR . 'src/build/js/filter.js');
+?>

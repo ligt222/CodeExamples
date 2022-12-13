@@ -13,7 +13,7 @@
 $this->setFrameMode(true);
 ?>
 
-<section class="b-doors">
+<section class="b-doors" data-template="/src/build/json/offers.mustache">
     <? foreach ($arResult['SECTIONS'] as $section): ?>
 
         <div class="b-door-card">

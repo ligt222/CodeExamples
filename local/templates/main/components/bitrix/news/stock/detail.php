@@ -1,19 +1,9 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-/** @var array $arParams */
-/** @var array $arResult */
-/** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
-$this->setFrameMode(true);
-?>
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die(); ?>
+
+<? $APPLICATION->SetPageProperty("header_page_wrapper", " promopage"); ?>
+
 <section class="b-promotions">
-<?$ElementID = $APPLICATION->IncludeComponent(
+<? $ElementID = $APPLICATION->IncludeComponent(
 	"bitrix:news.detail",
 	"promo",
 	Array(
@@ -69,8 +59,8 @@ $this->setFrameMode(true);
 	),
 	$component
 );?>
-<?$GLOBALS['press_filter'] = array('!CODE'=>$arResult['VARIABLES']['ELEMENT_CODE']);?>
-<?$APPLICATION->IncludeComponent(
+<? $GLOBALS['press_filter']['!ID'] = $ElementID; ?>
+<? $APPLICATION->IncludeComponent(
     "bitrix:news.list",
     "other_promo",
     Array(

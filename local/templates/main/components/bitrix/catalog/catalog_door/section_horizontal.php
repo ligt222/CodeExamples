@@ -95,133 +95,157 @@ if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMO
                     false
                 ); ?>
             </div>
-
-            <? $APPLICATION->IncludeComponent(
-                "bitrix:news.list",
-                "color_style",
-                array(
-                    "IBLOCK_TYPE" => "content",
-                    "IBLOCK_ID" => "5",
-                    "COMPONENT_TEMPLATE" => "color_style",
-                    "NEWS_COUNT" => "20",
-                    "SORT_BY1" => "ACTIVE_FROM",
-                    "SORT_ORDER1" => "DESC",
-                    "SORT_BY2" => "SORT",
-                    "SORT_ORDER2" => "ASC",
-                    "FILTER_NAME" => "",
-                    "FIELD_CODE" => array(
-                        0 => "",
-                        1 => "",
+            <div class="b-constructor-slider__gallery">
+                <? $APPLICATION->IncludeComponent(
+                    "bitrix:news.list",
+                    "color_style",
+                    array(
+                        "IBLOCK_TYPE" => "content",
+                        "IBLOCK_ID" => "5",
+                        "COMPONENT_TEMPLATE" => "color_style",
+                        "NEWS_COUNT" => "20",
+                        "SORT_BY1" => "ACTIVE_FROM",
+                        "SORT_ORDER1" => "DESC",
+                        "SORT_BY2" => "SORT",
+                        "SORT_ORDER2" => "ASC",
+                        "FILTER_NAME" => "",
+                        "FIELD_CODE" => array(
+                            0 => "",
+                            1 => "",
+                        ),
+                        "PROPERTY_CODE" => array(
+                            0 => "COLOR_ONE",
+                            1 => "COLOR_TWO",
+                            2 => "",
+                        ),
+                        "CHECK_DATES" => "Y",
+                        "DETAIL_URL" => "",
+                        "AJAX_MODE" => "N",
+                        "AJAX_OPTION_JUMP" => "N",
+                        "AJAX_OPTION_STYLE" => "Y",
+                        "AJAX_OPTION_HISTORY" => "N",
+                        "AJAX_OPTION_ADDITIONAL" => "",
+                        "CACHE_TYPE" => "A",
+                        "CACHE_TIME" => "36000000",
+                        "CACHE_FILTER" => "N",
+                        "CACHE_GROUPS" => "Y",
+                        "PREVIEW_TRUNCATE_LEN" => "",
+                        "ACTIVE_DATE_FORMAT" => "d.m.Y",
+                        "SET_TITLE" => "Y",
+                        "SET_BROWSER_TITLE" => "Y",
+                        "SET_META_KEYWORDS" => "Y",
+                        "SET_META_DESCRIPTION" => "Y",
+                        "SET_LAST_MODIFIED" => "N",
+                        "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+                        "ADD_SECTIONS_CHAIN" => "N",
+                        "HIDE_LINK_WHEN_NO_DETAIL" => "N",
+                        "PARENT_SECTION" => "",
+                        "PARENT_SECTION_CODE" => "",
+                        "INCLUDE_SUBSECTIONS" => "Y",
+                        "STRICT_SECTION_CHECK" => "N",
+                        "PAGER_TEMPLATE" => ".default",
+                        "DISPLAY_TOP_PAGER" => "N",
+                        "DISPLAY_BOTTOM_PAGER" => "Y",
+                        "PAGER_TITLE" => "Новости",
+                        "PAGER_SHOW_ALWAYS" => "N",
+                        "PAGER_DESC_NUMBERING" => "N",
+                        "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+                        "PAGER_SHOW_ALL" => "N",
+                        "PAGER_BASE_LINK_ENABLE" => "N",
+                        "SET_STATUS_404" => "N",
+                        "SHOW_404" => "N",
+                        "MESSAGE_404" => "",
                     ),
-                    "PROPERTY_CODE" => array(
-                        0 => "COLOR_ONE",
-                        1 => "COLOR_TWO",
-                        2 => "",
+                    false
+                ); ?>
+                <?
+                /*$GLOBALS['arrFilter'] = array('ID' => $arResult['ID_FIRST_ELEM']);
+                if ($_GET['ajax'] == 'Y') {
+                    $GLOBALS['arrFilter'] = array('ID' => $_REQUEST['id']);
+                }*/
+                $GLOBALS['arrFilter'] = ['ID' => 558];
+                if ($_REQUEST['ajax'] == 'Y') {
+                    $GLOBALS['arrFilter'] = ['ID' => $_REQUEST['id']];
+                }
+                ob_start();
+
+                $APPLICATION->IncludeComponent(
+                    "bitrix:catalog.smart.filter",
+                    "constructor",
+                    array(
+                        "COMPONENT_TEMPLATE" => "constructor",
+                        "IBLOCK_TYPE" => "catalog",
+                        "IBLOCK_ID" => "3",
+                        "SECTION_ID" => "",
+                        "SECTION_CODE" => "",
+                        "FILTER_NAME" => "arrFilter",
+                        "HIDE_NOT_AVAILABLE" => "N",
+                        "TEMPLATE_THEME" => "blue",
+                        "FILTER_VIEW_MODE" => "horizontal",
+                        "DISPLAY_ELEMENT_COUNT" => "Y",
+                        "SEF_MODE" => "N",
+                        "CACHE_TYPE" => "A",
+                        "CACHE_TIME" => "36000000",
+                        "CACHE_GROUPS" => "Y",
+                        "SAVE_IN_SESSION" => "N",
+                        "INSTANT_RELOAD" => "Y",
+                        "PAGER_PARAMS_NAME" => "arrPager",
+                        "PRICE_CODE" => array(),
+                        "CONVERT_CURRENCY" => "Y",
+                        "XML_EXPORT" => "N",
+                        "SECTION_TITLE" => "-",
+                        "SECTION_DESCRIPTION" => "-",
+                        "POPUP_POSITION" => "left",
+                        "SEF_RULE" => "/examples/books/#SECTION_ID#/filter/#SMART_FILTER_PATH#/apply/",
+                        "SECTION_CODE_PATH" => "",
+                        "SMART_FILTER_PATH" => $_REQUEST["SMART_FILTER_PATH"],
+                        "CURRENCY_ID" => "RUB",
+                        "PREFILTER_NAME" => "arrFilter",
+                        "SIZE_MIN" => $arResult['SIZE']['MIN'],
+                        "SIZE_MAX" => $arResult['SIZE']['MAX']
                     ),
-                    "CHECK_DATES" => "Y",
-                    "DETAIL_URL" => "",
-                    "AJAX_MODE" => "N",
-                    "AJAX_OPTION_JUMP" => "N",
-                    "AJAX_OPTION_STYLE" => "Y",
-                    "AJAX_OPTION_HISTORY" => "N",
-                    "AJAX_OPTION_ADDITIONAL" => "",
-                    "CACHE_TYPE" => "A",
-                    "CACHE_TIME" => "36000000",
-                    "CACHE_FILTER" => "N",
-                    "CACHE_GROUPS" => "Y",
-                    "PREVIEW_TRUNCATE_LEN" => "",
-                    "ACTIVE_DATE_FORMAT" => "d.m.Y",
-                    "SET_TITLE" => "Y",
-                    "SET_BROWSER_TITLE" => "Y",
-                    "SET_META_KEYWORDS" => "Y",
-                    "SET_META_DESCRIPTION" => "Y",
-                    "SET_LAST_MODIFIED" => "N",
-                    "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
-                    "ADD_SECTIONS_CHAIN" => "N",
-                    "HIDE_LINK_WHEN_NO_DETAIL" => "N",
-                    "PARENT_SECTION" => "",
-                    "PARENT_SECTION_CODE" => "",
-                    "INCLUDE_SUBSECTIONS" => "Y",
-                    "STRICT_SECTION_CHECK" => "N",
-                    "PAGER_TEMPLATE" => ".default",
-                    "DISPLAY_TOP_PAGER" => "N",
-                    "DISPLAY_BOTTOM_PAGER" => "Y",
-                    "PAGER_TITLE" => "Новости",
-                    "PAGER_SHOW_ALWAYS" => "N",
-                    "PAGER_DESC_NUMBERING" => "N",
-                    "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-                    "PAGER_SHOW_ALL" => "N",
-                    "PAGER_BASE_LINK_ENABLE" => "N",
-                    "SET_STATUS_404" => "N",
-                    "SHOW_404" => "N",
-                    "MESSAGE_404" => "",
-                ),
-                false
-            ); ?>
-            <?
-            $GLOBALS['arrFilter'] = array('ID' => 558);
-            if($_GET['ajax'] == 'Y'){
-                $GLOBALS['arrFilter'] = array('ID' => $_GET['id']);
-            }
-            ob_start();
+                    false
+                );
+                $arResult['filter_sku'] = ob_get_contents();
+                ob_end_clean();
 
-            $APPLICATION->IncludeComponent(
-                "bitrix:catalog.smart.filter",
-                "constructor",
-                array(
-                    "COMPONENT_TEMPLATE" => "constructor",
-                    "IBLOCK_TYPE" => "catalog",
-                    "IBLOCK_ID" => "3",
-                    "SECTION_ID" => "",
-                    "SECTION_CODE" => "",
-                    "FILTER_NAME" => "arrFilter",
-                    "HIDE_NOT_AVAILABLE" => "N",
-                    "TEMPLATE_THEME" => "blue",
-                    "FILTER_VIEW_MODE" => "horizontal",
-                    "DISPLAY_ELEMENT_COUNT" => "Y",
-                    "SEF_MODE" => "N",
-                    "CACHE_TYPE" => "A",
-                    "CACHE_TIME" => "36000000",
-                    "CACHE_GROUPS" => "Y",
-                    "SAVE_IN_SESSION" => "N",
-                    "INSTANT_RELOAD" => "Y",
-                    "PAGER_PARAMS_NAME" => "arrPager",
-                    "PRICE_CODE" => array(
-                    ),
-                    "CONVERT_CURRENCY" => "Y",
-                    "XML_EXPORT" => "N",
-                    "SECTION_TITLE" => "-",
-                    "SECTION_DESCRIPTION" => "-",
-                    "POPUP_POSITION" => "left",
-                    "SEF_RULE" => "/examples/books/#SECTION_ID#/filter/#SMART_FILTER_PATH#/apply/",
-                    "SECTION_CODE_PATH" => "",
-                    "SMART_FILTER_PATH" => $_REQUEST["SMART_FILTER_PATH"],
-                    "CURRENCY_ID" => "RUB",
-                    "PREFILTER_NAME" => "arrFilter",
-                    "SIZE_MIN" => $arResult['SIZE']['MIN'],
-                    "SIZE_MAX" => $arResult['SIZE']['MAX']
-                ),
-                false
-            );
-            $arResult['filter_sku'] = ob_get_contents();
-            ob_end_clean();
+                $resSect = CIBlockSection::GetList(
+                    array(),
+                    array('IBLOCK_ID' => 3, 'ID' => $arCurSection['ID']),
+                    false,
+                    array()
 
-            $resSect = CIBlockSection::GetList(
-                array(),
-                array('IBLOCK_ID' => 3, 'ID' => $arCurSection['ID']),
-                false,
-                array()
-
-            );
-            $nameSect = '';
-            if ($arSect = $resSect->Fetch()){
-                $nameSect = $arSect['NAME'];
-            }
-            ?>
+                );
+                $nameSect = '';
+                if ($arSect = $resSect->Fetch()) {
+                    $nameSect = $arSect['NAME'];
+                }
+                ?>
+                <?
+                    if ($_REQUEST['change-load'] == 'Y') {
+                        $APPLICATION->RestartBuffer();
+                        header('Content-Type: application/json');
+                        echo json_encode(['change_load' => $GLOBALS['RESULT_FILTER']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                        die;
+                    }
+                ?>
+                <script>
+                    var filterGlobals = <?=CUtil::PhpToJSObject($GLOBALS['RESULT_FILTER'])?>;
+                    console.log(filterGlobals);
+                </script>
+                <div class="b-constructor-slider__doors-wrap">
+                    <!--<img class="b-constructor-slider__door js-door-target js-image-wrapper"
+                         src="<?/*=SITE_TEMPLATE_PATH*/?>/images/content/doors/door_1.jpg"
+                         alt="" loading="lazy" role="presentation"/>-->
+                    <img class="b-constructor-slider__door js-door-target js-image-wrapper"
+                         src="<?=$GLOBALS['SKU_RESULT']['img'];?>"
+                         alt="" loading="lazy" role="presentation"/>
+                </div>
+            </div>
             <div class="b-constructor-slider__slider-wrap">
 
                 <div class="b-constructor-slider__series-name">Модели серии:&nbsp;
-                    <mark class="b-constructor-slider__mark"><?=$nameSect?>
+                    <mark class="b-constructor-slider__mark"><?= $nameSect ?>
                     </mark>
                 </div>
                 <div class="b-constructor-slider__slider-control">
@@ -231,7 +255,8 @@ if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMO
                     </button>
                 </div>
                 <div class="b-constructor-slider__inner-wrap">
-                    <? $APPLICATION->IncludeComponent(
+                    <?
+                    $APPLICATION->IncludeComponent(
                         "bitrix:catalog.section",
                         "product_door",
                         array(
@@ -345,19 +370,18 @@ if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMO
                         ),
                         $component
                     );
-
-                        if ($_GET['ajax'] == 'Y'){
-                            $APPLICATION->RestartBuffer();
-                            header('Content-Type: application/json');
-                            echo json_encode(['filter' => $GLOBALS['FILTER_RESULT']], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-                            die;
-                        }
-                        if ($_GET['ajax_sku'] == 'Y'){
-                            $APPLICATION->RestartBuffer();
-                            header('Content-Type: application/json');
-                            echo json_encode(['result' => $GLOBALS['SKU_RESULT']], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-                            die;
-                        }
+                    if ($_GET['ajax'] == 'Y') {
+                        $APPLICATION->RestartBuffer();
+                        header('Content-Type: application/json');
+                        echo json_encode(['filter' => $GLOBALS['FILTER_RESULT']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                        die;
+                    }
+                    if ($_GET['ajax_sku'] == 'Y') {
+                        $APPLICATION->RestartBuffer();
+                        header('Content-Type: application/json');
+                        echo json_encode(['result' => $GLOBALS['SKU_RESULT']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                        die;
+                    }
 
 
                     ?>
@@ -374,11 +398,35 @@ if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMO
 <aside class="b-aside js-aside">
     <div class="b-top-aside">
         <div class="b-top-aside__inner">
-            <div class="b-top-aside__item b-top-aside__item--cart"><a class="b-link-cart" href="/cart/"><span
-                            class="b-link-cart__icon"><i class="b-icon icon-basket"></i><span
-                                class="b-link-cart__counter"><span>3</span></span></span><span
-                            class="b-link-cart__text">Корзина</span></a>
-            </div>
+            <? $APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "cart_link", array(
+                    "HIDE_ON_BASKET_PAGES" => "Y",
+                    "PATH_TO_BASKET" => SITE_DIR . "cart/",
+                    "PATH_TO_ORDER" => '',
+                    "PATH_TO_PERSONAL" => '',
+                    "PATH_TO_PROFILE" => '',
+                    "PATH_TO_REGISTER" => '',
+                    "POSITION_FIXED" => "Y",
+                    "POSITION_HORIZONTAL" => "right",
+                    "POSITION_VERTICAL" => "top",
+                    "SHOW_AUTHOR" => "Y",
+                    "SHOW_DELAY" => "N",
+                    "SHOW_EMPTY_VALUES" => "Y",
+                    "SHOW_IMAGE" => "Y",
+                    "SHOW_NOTAVAIL" => "N",
+                    "SHOW_NUM_PRODUCTS" => "Y",
+                    "SHOW_PERSONAL_LINK" => "N",
+                    "SHOW_PRICE" => "Y",
+                    "SHOW_PRODUCTS" => "Y",
+                    "SHOW_SUMMARY" => "Y",
+                    "SHOW_TOTAL_PRICE" => "Y"
+                )
+            ); ?>
+            <? if ($_REQUEST['ajax_add'] == 'Y') {
+                $APPLICATION->RestartBuffer();
+                header('Content-Type: application/json');
+                echo json_encode(['count_product' => $GLOBALS['CNT_PRODUCT']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                die;
+            } ?>
             <div class="b-top-aside__item b-top-aside__item--login"><a
                         class="b-top-aside__link js-login js-authorization-open" href="javascript:void(0);"><span
                             class="b-top-aside__icon"><i class="b-icon icon-log-in"></i></span><span
@@ -405,18 +453,19 @@ if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMO
             </div>
         </div>
         <div class="b-constructor-count__name">
-            <span>BELINI-222-KAMINO-888-MERANA B2,</span><span> Слоновая кость,</span><span> Белое золото,</span><span> 800*2100,</span><span> ДО2</span>
+            <?=$GLOBALS['SKU_RESULT']['nameSku'];?> + Набор: <?=$GLOBALS['SKU_RESULT']['nameKit']?>
+            <?/*<span>BELINI-222-KAMINO-888-MERANA B2,</span><span> Слоновая кость,</span><span> Белое золото,</span><span> 800*2100,</span><span> ДО2</span>*/?>
         </div>
         <div class="b-constructor-count__price">
             <div class="b-constructor-count__price-text">
                 Цена
             </div>
             <div class="b-constructor-count__sum">
-                26 350 ₽
+                <?=$GLOBALS['SKU_RESULT']['price'];?> ₽
             </div>
         </div>
     </div>
 
-    <?=$arResult['filter_sku'];?>
+    <?= $arResult['filter_sku']; ?>
 
 </aside>

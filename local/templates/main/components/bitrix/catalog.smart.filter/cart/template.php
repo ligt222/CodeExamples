@@ -1,31 +1,6 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-/** @var array $arParams */
-/** @var array $arResult */
-/** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
-$this->setFrameMode(true);
-
-$templateData = array(
-    'TEMPLATE_THEME' => $this->GetFolder() . '/themes/' . $arParams['TEMPLATE_THEME'] . '/colors.css',
-    'TEMPLATE_CLASS' => 'bx-' . $arParams['TEMPLATE_THEME']
-);
-
-if (isset($templateData['TEMPLATE_THEME'])) {
-    $this->addExternalCss($templateData['TEMPLATE_THEME']);
-}
-$this->addExternalCss("/bitrix/css/main/bootstrap.css");
-$this->addExternalCss("/bitrix/css/main/font-awesome.css");
-
-?>
-<form class="b-constructor js-constructor js-form-validate" method="post"
-      name="form-feedback_form"
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
+<form class="b-constructor js-constructor js-form-validate block-hidden" data-template="<?=SITE_DIR?>src/build/json/filter-list.mustache" method="post"
+      name="<?= $arResult["FILTER_NAME"] . "_form" ?>"
       action="<?= $arResult["FORM_ACTION"] ?>">
     <input type="hidden" name="set_filter" value="Y">
     <? foreach ($arResult["HIDDEN"] as $arItem): ?>
@@ -45,7 +20,7 @@ $this->addExternalCss("/bitrix/css/main/font-awesome.css");
                 </ul>
             </nav>
         </div>
-        <div class="b-constructor__list">
+        <div class="b-constructor__list js-render-list">
             <? foreach ($arResult["ITEMS"] as $key => $arItem) {
                 if (
                     empty($arItem["VALUES"])
@@ -84,9 +59,31 @@ $this->addExternalCss("/bitrix/css/main/font-awesome.css");
                             <? foreach ($arItem["VALUES"] as $val => $ar): ?>
                                 <div class="b-radio-button">
                                     <input class="b-radio-button__input js-radio-button"
-                                           type="radio" name="<?= $ar["CONTROL_NAME"] ?>"
+                                           type="radio" name="<?= strtolower($arItem['CODE']) ?>"
                                            id="<?= $ar["CONTROL_ID"] ?>"
                                            data-target="<?= $ar['FILE']['SRC'] ?>"
+                                        <? switch ($arItem['CODE']) {
+                                            case 'COLOR_REF':
+                                                echo 'data-name-color="' . $ar["VALUE"] . '"';
+                                                echo 'data-code-color="' . $ar['URL_ID'] . '"';
+                                                break;
+                                            case 'EXECUTIONS':
+                                                echo 'data-name-exec="' . $ar["VALUE"] . '"';
+                                                echo 'data-code-exec="' . $ar['URL_ID'] . '"';
+                                                break;
+                                            case 'PATINA':
+                                                echo 'data-name-patina="' . $ar["VALUE"] . '"';
+                                                echo 'data-code-patina="' . $ar['URL_ID'] . '"';
+                                                break;
+                                            case 'SIZE':
+                                                echo 'data-name-size="' . $ar["VALUE"] . '"';
+                                                echo 'data-code-size="' . $ar['URL_ID'] . '"';
+                                                break;
+                                            case 'GLAZING':
+                                                echo 'data-name-glazing="' . $ar["VALUE"] . '"';
+                                                echo 'data-code-glazing="' . $ar['URL_ID'] . '"';
+                                                break;
+                                        } ?>
                                            value="<?= $ar['HTML_VALUE']; ?>"/>
                                     <label class="b-radio-button__label" for="<?= $ar["CONTROL_ID"] ?>">
                                     <span class="b-radio-button__wrap js-current-el">

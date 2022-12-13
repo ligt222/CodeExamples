@@ -1,29 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-/** @var array $arParams */
-/** @var array $arResult */
-/** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
-$this->setFrameMode(true);
-
-$templateData = array(
-    'TEMPLATE_THEME' => $this->GetFolder() . '/themes/' . $arParams['TEMPLATE_THEME'] . '/colors.css',
-    'TEMPLATE_CLASS' => 'bx-' . $arParams['TEMPLATE_THEME']
-);
-
-if (isset($templateData['TEMPLATE_THEME'])) {
-    $this->addExternalCss($templateData['TEMPLATE_THEME']);
-}
-$this->addExternalCss("/bitrix/css/main/bootstrap.css");
-$this->addExternalCss("/bitrix/css/main/font-awesome.css");
 ?>
-<form class="b-constructor js-constructor js-form-validate" method="post"
+<form class="4444 b-constructor js-constructor js-form-validate" method="post"
+      data-template="/src/build/json/filter-list.mustache"
       name="<?= $arResult["FILTER_NAME"] . "_form" ?>"
       action="<?= $arResult["FORM_ACTION"] ?>">
     <input type="hidden" name="set_filter" value="Y">
@@ -36,32 +14,24 @@ $this->addExternalCss("/bitrix/css/main/font-awesome.css");
         <div class="b-constructor__breadcrumbs">
             <nav class="b-breadcrumbs b-breadcrumbs--light js-backcrumbs">
                 <ul class="b-breadcrumbs__list">
-                    <li class="b-breadcrumbs__item"><a class="b-breadcrumbs__link js-constructor-back"
-                                                       title="Конструктор">Конструктор</a>
+                    <li class="b-breadcrumbs__item">
+                        <a class="b-breadcrumbs__link js-constructor-back" title="Конструктор">Конструктор</a>
                     </li>
-                    <li class="b-breadcrumbs__item hidden"><span
-                                class="b-breadcrumbs__link js-backcrumbs-item"></span>
+                    <li class="b-breadcrumbs__item hidden">
+                        <span class="b-breadcrumbs__link js-backcrumbs-item"></span>
                     </li>
                 </ul>
             </nav>
         </div>
-        <div class="b-constructor__list">
+        <div class="b-constructor__list js-render-list">
             <? foreach ($arResult["ITEMS"] as $key => $arItem) {
-                if (
-                    empty($arItem["VALUES"])
-                    || isset($arItem["PRICE"])
-                )
+                if (empty($arItem["VALUES"]) || isset($arItem["PRICE"]))
                     continue;
-
-                if (
-                    $arItem["DISPLAY_TYPE"] == "A"
-                    && (
-                        $arItem["VALUES"]["MAX"]["VALUE"] - $arItem["VALUES"]["MIN"]["VALUE"] <= 0
-                    )
-                )
+                if ($arItem["DISPLAY_TYPE"] == "A" && ($arItem["VALUES"]["MAX"]["VALUE"] - $arItem["VALUES"]["MIN"]["VALUE"] <= 0))
                     continue;
                 ?>
                 <? if ($arItem['IBLOCK_ID'] == 4): ?>
+
                     <div class="b-constructor__item">
                         <a class="b-constructor__link js-constructor-link"
                            href="javascript:void(0);">
@@ -79,11 +49,12 @@ $this->addExternalCss("/bitrix/css/main/font-awesome.css");
                                 </a>
                             </div>
                         </div>
-                        <div class="b-constructor__filter-list js-constructor-filter">
+                        <div class="b-constructor__filter-list js-constructor-filter js-scroll-Y 321">
                             <? foreach ($arItem["VALUES"] as $val => $ar): ?>
+                            <?print_r($arItem['CODE']);?>
                                 <div class="b-radio-button">
                                     <input class="b-radio-button__input js-radio-button"
-                                           type="radio" name="<?= $ar["CONTROL_NAME"] ?>"
+                                           type="radio" name="<?= strtolower($arItem['CODE']) ?>"
                                            id="<?= $ar["CONTROL_ID"] ?>"
                                            data-target="<?= $ar['FILE']['SRC'] ?>"
                                         <? switch ($arItem['CODE']) {
@@ -138,9 +109,12 @@ $this->addExternalCss("/bitrix/css/main/font-awesome.css");
         </div>
     </div>
     <div class="b-constructor__buttons">
-        <button class="b-button b-button--back js-constructor-back"><i class="b-icon icon-arrow-left"></i>
+        <button class="b-button b-button--back js-constructor-back">
+            <i class="b-icon icon-arrow-left"></i>
         </button>
-        <a class="b-button b-button--with-icon js-open-popup" title="undefined" data-popup="cart"><span>Добавить в корзину</span><i
-                    class="b-icon icon-basket"></i></a>
+        <a class="b-button b-button--with-icon js-open-popup js-add-cart" data-id="<?=$arResult['RESULT_FILTER']['id']?>" title="Добавить в корзину" data-popup="cart">
+            <span>Добавить в корзину</span>
+            <i class="b-icon icon-basket"></i>
+        </a>
     </div>
 </form>

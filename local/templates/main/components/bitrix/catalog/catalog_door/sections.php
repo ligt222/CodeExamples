@@ -1,44 +1,5 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-
-/** @var array $arParams */
-/** @var array $arResult */
-/** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
-
-$this->setFrameMode(true);
-$this->addExternalCss("/bitrix/css/main/bootstrap.css");
-
-$sectionListParams = array(
-    "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-    "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-    "CACHE_TYPE" => $arParams["CACHE_TYPE"],
-    "CACHE_TIME" => $arParams["CACHE_TIME"],
-    "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-    "COUNT_ELEMENTS" => $arParams["SECTION_COUNT_ELEMENTS"],
-    "TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
-    "SECTION_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["section"],
-    "VIEW_MODE" => $arParams["SECTIONS_VIEW_MODE"],
-    "SHOW_PARENT_NAME" => $arParams["SECTIONS_SHOW_PARENT_NAME"],
-    "HIDE_SECTION_NAME" => (isset($arParams["SECTIONS_HIDE_SECTION_NAME"]) ? $arParams["SECTIONS_HIDE_SECTION_NAME"] : "N"),
-    "ADD_SECTIONS_CHAIN" => (isset($arParams["ADD_SECTIONS_CHAIN"]) ? $arParams["ADD_SECTIONS_CHAIN"] : ''),
-    "FILTER_NAME" => "arrFilterSect",
-    "AJAX_MODE" => 'Y'
-);
-if ($sectionListParams["COUNT_ELEMENTS"] === "Y") {
-    $sectionListParams["COUNT_ELEMENTS_FILTER"] = "CNT_ACTIVE";
-    if ($arParams["HIDE_NOT_AVAILABLE"] == "Y") {
-        $sectionListParams["COUNT_ELEMENTS_FILTER"] = "CNT_AVAILABLE";
-    }
-}
-?>
-<?
+$APPLICATION->SetPageProperty("header_page_wrapper", " mainpage");
 
 ob_start();
 $APPLICATION->IncludeComponent(
@@ -47,7 +8,6 @@ $APPLICATION->IncludeComponent(
     array(
         "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
         "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-        "SECTION_ID" => $arCurSection['ID'],
         "FILTER_NAME" => 'arrFilter',
         "PRICE_CODE" => $arParams["~PRICE_CODE"],
         "CACHE_TYPE" => $arParams["CACHE_TYPE"],
@@ -76,52 +36,72 @@ ob_end_clean();
 ?>
 <main class="b-main" role="main">
     <div class="b-container">
-        <?
+    <?
+        if ($_GET['set_filter'] == 'Y')
+        {
+            if ($GLOBALS['arrFilter'])
+            {
+                $arrFilterSect = [];
+                $res = CIBlockElement::GetList(
+                    array(),
+                    $GLOBALS['arrFilter'],
+                    array('IBLOCK_SECTION_ID'),
+                    array(),
+                    array(
+                        'ID',
+                        'IBLOCK_SECTION_ID'
+                    )
+                );
 
-        if ($_REQUEST['AJAX_CALL'] == 'Y') {
+                while ($arFields = $res->Fetch())
+                {
+                    $arrFilterSect[] = $arFields['IBLOCK_SECTION_ID'];
+                }
 
-            $arrFilterSect = array();
-            $i = 0;
-            $res = CIBlockElement::GetList(
-                array(),
-                $GLOBALS['FILTER_ELEM_SECT'],
-                array('IBLOCK_SECTION_ID'),
-                array(),
-                array(
-                    'ID',
-                    'IBLOCK_SECTION_ID'
-                )
-            );
-            while ($arFields = $res->Fetch()) {
-                $arrFilterSect[$i] = $arFields['IBLOCK_SECTION_ID'];
-                $i++;
-            }
-            if ($arrFilterSect) {
-                $GLOBALS['arrFilterSect']['=ID'] = $arrFilterSect;
-            } else {
-                $GLOBALS['arrFilterSect'] = array();
+                if ($arrFilterSect)
+                {
+                    $GLOBALS['arrFilterSect']['=ID'] = $arrFilterSect;
+                }
             }
         }
-        if (!empty($GLOBALS['FILTER_ELEM_SECT']) && empty($GLOBALS['arrFilterSect'])) {
+
+        if (!empty($GLOBALS['arrFilter']) && empty($GLOBALS['arrFilterSect']))
+        {
             echo 'Нет элементов';
-        } else {
+        }
+        else
+        {
             $APPLICATION->IncludeComponent(
                 "bitrix:catalog.section.list",
                 "catalog_door_section",
-                $sectionListParams,
+                array(
+                    "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+                    "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+                    "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+                    "CACHE_TIME" => $arParams["CACHE_TIME"],
+                    "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+                    "COUNT_ELEMENTS" => $arParams["SECTION_COUNT_ELEMENTS"],
+                    "TOP_DEPTH" => 1,
+                    "SECTION_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["section"],
+                    "VIEW_MODE" => $arParams["SECTIONS_VIEW_MODE"],
+                    "SHOW_PARENT_NAME" => $arParams["SECTIONS_SHOW_PARENT_NAME"],
+                    "HIDE_SECTION_NAME" => (isset($arParams["SECTIONS_HIDE_SECTION_NAME"]) ? $arParams["SECTIONS_HIDE_SECTION_NAME"] : "N"),
+                    "ADD_SECTIONS_CHAIN" => (isset($arParams["ADD_SECTIONS_CHAIN"]) ? $arParams["ADD_SECTIONS_CHAIN"] : ''),
+                    "FILTER_NAME" => "arrFilterSect",
+                    "AJAX_MODE" => 'Y'
+                ),
                 $component,
                 ($arParams["SHOW_TOP_ELEMENTS"] !== "N" ? array("HIDE_ICONS" => "Y") : array())
             );
         }
-        if ($_REQUEST['AJAX_CALL'] == 'Y') {
+        if ($_GET['set_filter'] == 'Y')
+        {
             $APPLICATION->RestartBuffer();
             header('Content-Type: application/json');
-            echo json_encode(['result' => $GLOBALS['RESULT'], 'filter' => $GLOBALS['FILTER_RESULT']], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+            echo json_encode(['result' => $GLOBALS['RESULT'], 'filter' => $GLOBALS['FILTER_RESULT']], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             die;
         }
-
-        unset($sectionListParams);
-        ?>
+    ?>
 
     </div>
 </main>
@@ -130,26 +110,51 @@ ob_end_clean();
         <div class="b-filter__inner">
             <div class="b-top-aside b-top-aside--mainpage">
                 <div class="b-top-aside__inner">
-                    <div class="b-top-aside__item b-top-aside__item--cart"><a class="b-link-cart"
-                                                                              href="/cart.html"><span
-                                    class="b-link-cart__icon"><i class="b-icon icon-basket"></i><span
-                                        class="b-link-cart__counter"><span>3</span></span></span><span
-                                    class="b-link-cart__text">Корзина</span></a>
-                    </div>
+                    <? $APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "cart_link", array(
+                            "HIDE_ON_BASKET_PAGES" => "Y",
+                            "PATH_TO_BASKET" => "/cart/",
+                            "PATH_TO_ORDER" => '',
+                            "PATH_TO_PERSONAL" => '',
+                            "PATH_TO_PROFILE" => '',
+                            "PATH_TO_REGISTER" => '',
+                            "POSITION_FIXED" => "Y",
+                            "POSITION_HORIZONTAL" => "right",
+                            "POSITION_VERTICAL" => "top",
+                            "SHOW_AUTHOR" => "Y",
+                            "SHOW_DELAY" => "N",
+                            "SHOW_EMPTY_VALUES" => "Y",
+                            "SHOW_IMAGE" => "Y",
+                            "SHOW_NOTAVAIL" => "N",
+                            "SHOW_NUM_PRODUCTS" => "Y",
+                            "SHOW_PERSONAL_LINK" => "N",
+                            "SHOW_PRICE" => "Y",
+                            "SHOW_PRODUCTS" => "Y",
+                            "SHOW_SUMMARY" => "Y",
+                            "SHOW_TOTAL_PRICE" => "Y"
+                        )
+                    ); ?>
                     <div class="b-top-aside__item b-top-aside__item--login">
-                        <a class="b-top-aside__link js-login js-authorization-open"
-                           href="javascript:void(0);">
-                            <span class="b-top-aside__icon">
-                                <i class="b-icon icon-log-in"></i>
-                            </span>
-                            <span class="b-top-aside__text">
-                                <?if($USER->IsAuthorized()):?>
-                                    <?=$USER->GetLogin()?>
-                                <?else:?>
-                                    Войти
-                                <?endif;?>
-                            </span>
-                        </a>
+                        <? if (!$USER->IsAuthorized()): ?>
+                            <a class="b-top-aside__link js-login js-authorization-open"
+                               href="javascript:void(0);">
+                                <span class="b-top-aside__icon">
+                                    <i class="b-icon icon-log-in"></i>
+                                </span>
+                                <span class="b-top-aside__text">
+                                        Войти
+                                </span>
+                            </a>
+                        <? else : ?>
+                            <a class="b-top-aside__link authorized js-open-popup" data-popup="logout""
+                               href="javascript:void(0);">
+                                <span class="b-top-aside__icon">
+                                    <i class="b-icon icon-log-in"></i>
+                                </span>
+                                <span class="b-top-aside__text">
+                                    <?= $USER->GetLogin() ?>
+                                </span>
+                            </a>
+                        <? endif; ?>
                     </div>
                 </div>
             </div>

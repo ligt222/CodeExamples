@@ -1,40 +1,26 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-/** @var array $arParams */
-/** @var array $arResult */
-/** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
-$this->setFrameMode(true);
-?>
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
-<section class="b-doors">
-    <? foreach ($arResult['SECTIONS'] as $section): ?>
-        <? if($section['ELEMENT_CNT_TITLE']): ?>
-        <div class="b-door-card">
-            <a class="b-door-card__link" href="<?= $section['SECTION_PAGE_URL'] ?>" title="<?= $section['NAME'] ?>">
-                        <span class="b-images b-images--door-card js-image-wrapper">
-                            <img class="b-images__image b-images__image--door-card js-image-wrapper"
-                                 src="<?= $section['PICTURE']['SRC'] ?>" loading="lazy" alt=""
-                                 role="presentation"/>
-                        </span>
-                <div class="b-door-card__info-wrap">
-                    <h3 class="b-door-card__title">
-                        <?= $section['NAME'] ?>
-                    </h3>
-                </div>
-                <span class="b-door-card__watter-mark">
-                <!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg"
-                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                     y="0px"
-                     width="56.4px" height="500px" viewBox="0 0 56.4 500" enable-background="new 0 0 56.4 500"
-                     xml:space="preserve">
+<section class="b-doors" data-template="/src/build/json/offers.mustache">
+
+<? foreach ($arResult['SECTIONS'] as $section): ?>
+    <? if ($section['ELEMENT_CNT'] && $section['CODE'] !== 'dekor'): ?>
+    <div class="b-door-card">
+        <a class="b-door-card__link" href="<?= $section['SECTION_PAGE_URL'] ?>" title="<?= $section['NAME'] ?>">
+            <span class="b-images b-images--door-card js-image-wrapper">
+                <img class="b-images__image b-images__image--door-card js-image-wrapper" src="<?= $section['PICTURE']['SRC'] ?>" loading="lazy" alt="" role="presentation"/>
+            </span>
+            <div class="b-door-card__info-wrap">
+                <h3 class="b-door-card__title">
+                    <?= $section['NAME'] ?>
+                </h3>
+            </div>
+            <span class="b-door-card__watter-mark">
+            <!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+            <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                 y="0px"
+                 width="56.4px" height="500px" viewBox="0 0 56.4 500" enable-background="new 0 0 56.4 500"
+                 xml:space="preserve">
 <path fill="#F4F4F4" d="M56.4,127.5v6.5h-7.9v40.3h7.9v6.8H42.6v-3.7c-3.7-1.1-7.5-1.9-11.4-2.3c-3.8-0.5-7.7-0.8-11.5-0.9H5.4
 v-43.6h37.3v-3L56.4,127.5z M42.6,137.1H11.2v30.7h8.5c7.7-0.1,15.4,0.9,22.9,2.7V137.1z M13.1,68.8c9.2-1.3,18.5-1.3,27.6,0
 c4,1.2,6.6,4.9,7.7,11.1c0.6,4.9,0.8,9.8,0.7,14.7c0.1,5-0.1,9.9-0.7,14.8c-1.1,6.2-3.7,10-7.7,11.1c-4.5,0.8-9.2,1.2-13.8,1
@@ -54,9 +40,10 @@ h5.9V375h12.5v-33.9h5.9V375h13.1v-35.1H49.6z M49.6,279v6.5H12.1l37.6,36.9v9.8H6.
 H0.1v-19.5H5.9z M49.6,219.4v6.5H12.4v31.4h8.1c19.5,0,29.2,2.5,29.2,7.6v6.3h-5.9v-2.6c0-3.3-6.3-4.9-19-4.9H6.4v-44.5L49.6,219.4z
 "/>
 </svg>
-            </span>
-            </a>
-        </div>
-    <? endif; ?>
-    <? endforeach; ?>
+        </span>
+        </a>
+    </div>
+<? endif; ?>
+<? endforeach; ?>
+
 </section>
